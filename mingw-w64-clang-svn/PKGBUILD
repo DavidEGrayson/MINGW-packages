@@ -20,7 +20,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-svn"
          "${MINGW_PACKAGE_PREFIX}-lld-svn"
          "${MINGW_PACKAGE_PREFIX}-llvm-svn"
         )
-pkgver=58328.e770ba6
+pkgver=58329.0103b53
 pkgrel=1
 pkgdesc="C language family frontend for LLVM (mingw-w64)"
 arch=('any')
@@ -88,6 +88,7 @@ pkgver() {
 
 prepare() {
   cd "${srcdir}"/llvm
+  test -d .git/rebase-apply && git am --abort
   git am "${srcdir}"/0001-Fix-GetHostTriple-for-mingw-w64-in-msys.patch
 
   # Fix docs installation directory
@@ -99,26 +100,35 @@ prepare() {
     cmake/modules/Makefile
 
   cd "${srcdir}"/clang
+  test -d .git/rebase-apply && git am --abort
   git am "${srcdir}"/0012-Set-the-x86-arch-name-to-i686-for-mingw-w64.patch
 
   #cd "${srcdir}"/compiler-rt
 
   cd "${srcdir}"/lld
+  test -d .git/rebase-apply && git am --abort
   #git am "${srcdir}"/0031-COFF-add-the-mingw-alias-for-ImageBase.patch
   git am "${srcdir}"/0032-PECOFF-add-the-mingw-alias-for-ImageBase.patch
   git am "${srcdir}"/0033-PECOFF-add-searchLibrary-function-with-sysroot-suppo.patch
   git am "${srcdir}"/0034-GNU-add-support-for-linking-PECOFF.patch
 
   cd "${srcdir}"/libcxx
+  test -d .git/rebase-apply && git am --abort
   git am "${srcdir}"/0041-libcxx-add-support-for-mingw-w64.patch
 
   cd "${srcdir}"
+  rm -rf               llvm/tools/lld
   mv lld               llvm/tools/lld
+  rm -rf               llvm/tools/clang
   mv clang             llvm/tools/clang
   mv clang-tools-extra llvm/tools/clang/tools/extra
+  rm -rf               llvm/projects/compiler-rt
   mv compiler-rt       llvm/projects/compiler-rt
+  rm -rf               llvm/projects/libcxxabi
   mv libcxxabi         llvm/projects/libcxxabi
+  rm -rf               llvm/projects/libcxx
   mv libcxx            llvm/projects/libcxx
+# rm -rf               llvm/projects/test-suite
 # mv testsuite         llvm/projects/test-suite
 
 }
