@@ -1,11 +1,17 @@
-From 4ae708fdabd2cfc8882cf03d07ab0d5bf22e4964 Mon Sep 17 00:00:00 2001
+From c22ff0416394a88457bee33e73e6068d3de6edbd Mon Sep 17 00:00:00 2001
 From: Martell Malone <martellmalone@gmail.com>
-Date: Thu, 2 Jul 2015 05:35:51 +0100
-Subject: [PATCH] GNU: add support for linking PECOFF
+Date: Tue, 4 Aug 2015 21:48:43 -0700
+Subject: [PATCH 3/3] GNU: add support for linking PECOFF
 
+---
+ include/lld/Driver/Driver.h    |  37 ++++-
+ lib/Driver/GnuLdDriver.cpp     | 332 ++++++++++++++++++++++++++++++++++++-----
+ lib/Driver/GnuLdOptions.td     |  12 ++
+ lib/Driver/UniversalDriver.cpp |   2 +-
+ 4 files changed, 340 insertions(+), 43 deletions(-)
 
 diff --git a/include/lld/Driver/Driver.h b/include/lld/Driver/Driver.h
-index 160826c..8a276e4 100644
+index ea2d8b4..01d82c4 100644
 --- a/include/lld/Driver/Driver.h
 +++ b/include/lld/Driver/Driver.h
 @@ -67,14 +67,43 @@ class GnuLdDriver : public Driver {
@@ -57,7 +63,7 @@ index 160826c..8a276e4 100644
    /// Parses a given memory buffer as a linker script and evaluate that.
    /// Public function for testing.
 diff --git a/lib/Driver/GnuLdDriver.cpp b/lib/Driver/GnuLdDriver.cpp
-index fbdc12d..21abb62 100644
+index 800297c..85a5714 100644
 --- a/lib/Driver/GnuLdDriver.cpp
 +++ b/lib/Driver/GnuLdDriver.cpp
 @@ -15,6 +15,7 @@
@@ -198,7 +204,7 @@ index fbdc12d..21abb62 100644
    switch (triple.getArch()) {
    case llvm::Triple::x86:
    case llvm::Triple::x86_64:
-@@ -184,6 +291,29 @@ getArchType(const llvm::Triple &triple, StringRef value) {
+@@ -191,6 +298,29 @@ getArchType(const llvm::Triple &triple, StringRef value) {
    }
  }
  
@@ -228,7 +234,7 @@ index fbdc12d..21abb62 100644
  static bool isLinkerScript(StringRef path, raw_ostream &diag) {
    llvm::sys::fs::file_magic magic = llvm::sys::fs::file_magic::unknown;
    if (std::error_code ec = llvm::sys::fs::identify_magic(path, magic)) {
-@@ -195,7 +325,24 @@ static bool isLinkerScript(StringRef path, raw_ostream &diag) {
+@@ -202,7 +332,24 @@ static bool isLinkerScript(StringRef path, raw_ostream &diag) {
  }
  
  static ErrorOr<StringRef>
@@ -254,7 +260,7 @@ index fbdc12d..21abb62 100644
    // If the path was referred to by using a -l argument, let's search
    // for the file in the search path.
    if (dashL) {
-@@ -219,6 +366,17 @@ static bool isPathUnderSysroot(StringRef sysroot, StringRef path) {
+@@ -226,6 +373,17 @@ static bool isPathUnderSysroot(StringRef sysroot, StringRef path) {
    return !path.empty();
  }
  
@@ -272,7 +278,7 @@ index fbdc12d..21abb62 100644
  static std::error_code
  addFilesFromLinkerScript(ELFLinkingContext &ctx, StringRef scriptPath,
                           const std::vector<script::Path> &inputPaths,
-@@ -339,40 +497,11 @@ getBool(const llvm::opt::InputArgList &parsedArgs,
+@@ -346,40 +504,11 @@ getBool(const llvm::opt::InputArgList &parsedArgs,
    return llvm::None;
  }
  
@@ -318,7 +324,7 @@ index fbdc12d..21abb62 100644
  
    std::unique_ptr<ELFLinkingContext> ctx(createELFLinkingContext(triple));
  
-@@ -673,7 +802,7 @@ bool GnuLdDriver::parse(llvm::ArrayRef<const char *> args,
+@@ -680,7 +809,7 @@ bool GnuLdDriver::parse(llvm::ArrayRef<const char *> args,
        bool dashL = (arg->getOption().getID() == OPT_l);
        StringRef path = arg->getValue();
  
@@ -327,7 +333,7 @@ index fbdc12d..21abb62 100644
        if (std::error_code ec = pathOrErr.getError()) {
          auto file = llvm::make_unique<ErrorFile>(path, ec);
          auto node = llvm::make_unique<FileNode>(std::move(file));
-@@ -747,6 +876,133 @@ bool GnuLdDriver::parse(llvm::ArrayRef<const char *> args,
+@@ -754,6 +883,133 @@ bool GnuLdDriver::parse(llvm::ArrayRef<const char *> args,
    return true;
  }
  
@@ -485,18 +491,18 @@ index b3c3d90..7aa8547 100644
  //===----------------------------------------------------------------------===//
  def grp_ignored: OptionGroup<"ignored">,
 diff --git a/lib/Driver/UniversalDriver.cpp b/lib/Driver/UniversalDriver.cpp
-index c09addf..8ce45ea 100644
+index d74b0f3..9c1774c 100644
 --- a/lib/Driver/UniversalDriver.cpp
 +++ b/lib/Driver/UniversalDriver.cpp
-@@ -201,7 +201,7 @@ bool UniversalDriver::link(llvm::MutableArrayRef<const char *> args,
+@@ -203,7 +203,7 @@ bool UniversalDriver::link(llvm::MutableArrayRef<const char *> args,
    // Switch to appropriate driver.
    switch (flavor) {
    case Flavor::gnu_ld:
 -    return GnuLdDriver::linkELF(args, diagnostics);
 +    return GnuLdDriver::linkGNU(args, diagnostics);
-   case Flavor::darwin_ld:
-     return DarwinLdDriver::linkMachO(args, diagnostics);
-   case Flavor::win_link:
+   case Flavor::gnu_ld2:
+     elf2::link(args);
+     return true;
 -- 
-2.4.5
+2.4.6
 

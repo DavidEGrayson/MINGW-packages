@@ -1,7 +1,7 @@
-From ef70aa910f276615977c7b3e61f5c61418208960 Mon Sep 17 00:00:00 2001
+From e5aba5957ed553a15c8caedddd1b14853d814edb Mon Sep 17 00:00:00 2001
 From: Martell Malone <martellmalone@gmail.com>
 Date: Mon, 8 Jun 2015 02:21:51 +0100
-Subject: [PATCH 3/4] PECOFF: add searchLibrary function with sysroot support
+Subject: [PATCH 2/3] PECOFF: add searchLibrary function with sysroot support
 
 ---
  include/lld/ReaderWriter/PECOFFLinkingContext.h  |  5 ++++
@@ -9,7 +9,7 @@ Subject: [PATCH 3/4] PECOFF: add searchLibrary function with sysroot support
  2 files changed, 41 insertions(+)
 
 diff --git a/include/lld/ReaderWriter/PECOFFLinkingContext.h b/include/lld/ReaderWriter/PECOFFLinkingContext.h
-index 2e19dd8..4f48882 100644
+index aadf2d6..1d8c248 100644
 --- a/include/lld/ReaderWriter/PECOFFLinkingContext.h
 +++ b/include/lld/ReaderWriter/PECOFFLinkingContext.h
 @@ -105,6 +105,7 @@ public:
@@ -20,7 +20,7 @@ index 2e19dd8..4f48882 100644
    StringRef searchLibraryFile(StringRef path) const;
  
    StringRef decorateSymbol(StringRef name) const;
-@@ -321,6 +322,9 @@ public:
+@@ -323,6 +324,9 @@ public:
      return _parseDirectives;
    }
  
@@ -30,7 +30,7 @@ index 2e19dd8..4f48882 100644
  protected:
    /// Method to create a internal file for the entry symbol
    std::unique_ptr<File> createEntrySymbolFile() const override;
-@@ -402,6 +406,7 @@ private:
+@@ -404,6 +408,7 @@ private:
    std::set<std::string> _noDefaultLibs;
  
    std::vector<StringRef> _inputSearchPaths;
@@ -98,5 +98,5 @@ index 2bd0e9c..043fe6f 100644
  /// the input file list. Returns true if the library file is found.
  StringRef PECOFFLinkingContext::searchLibraryFile(StringRef filename) const {
 -- 
-2.3.3
+2.4.6
 
