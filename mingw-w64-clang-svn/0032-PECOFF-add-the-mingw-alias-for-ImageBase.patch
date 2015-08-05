@@ -1,16 +1,5 @@
-From dd9f24a90e6f4cbe251280c40d61a99f7ffaee38 Mon Sep 17 00:00:00 2001
-From: Martell Malone <martellmalone@gmail.com>
-Date: Mon, 8 Jun 2015 02:17:26 +0100
-Subject: [PATCH 2/4] PECOFF: add the mingw alias for ImageBase
-
----
- lib/ReaderWriter/PECOFF/LinkerGeneratedSymbolFile.h | 10 +++++++---
- lib/ReaderWriter/PECOFF/PECOFFLinkingContext.cpp    |  2 +-
- lib/ReaderWriter/PECOFF/WriterPECOFF.cpp            |  4 +++-
- 3 files changed, 11 insertions(+), 5 deletions(-)
-
 diff --git a/lib/ReaderWriter/PECOFF/LinkerGeneratedSymbolFile.h b/lib/ReaderWriter/PECOFF/LinkerGeneratedSymbolFile.h
-index cfa66bf..21186f3 100644
+index 9bf2c00..aee2251 100644
 --- a/lib/ReaderWriter/PECOFF/LinkerGeneratedSymbolFile.h
 +++ b/lib/ReaderWriter/PECOFF/LinkerGeneratedSymbolFile.h
 @@ -97,13 +97,17 @@ class LinkerGeneratedSymbolFile : public SimpleFile {
@@ -48,7 +37,7 @@ index ebd42f8..2bd0e9c 100644
        llvm::make_unique<pecoff::LinkerGeneratedSymbolFile>(*this)));
    members.push_back(std::move(fileNode));
 diff --git a/lib/ReaderWriter/PECOFF/WriterPECOFF.cpp b/lib/ReaderWriter/PECOFF/WriterPECOFF.cpp
-index 8c3aac0..63d0dad 100644
+index 4c6309a..b240d2b 100644
 --- a/lib/ReaderWriter/PECOFF/WriterPECOFF.cpp
 +++ b/lib/ReaderWriter/PECOFF/WriterPECOFF.cpp
 @@ -791,7 +791,9 @@ void AtomChunk::addBaseRelocations(std::vector<BaseReloc> &relocSites) const {
@@ -62,6 +51,3 @@ index 8c3aac0..63d0dad 100644
            continue;
  
        uint64_t address = layout->_virtualAddr + ref->offsetInAtom();
--- 
-2.3.3
-
