@@ -136,7 +136,6 @@ build() {
   MSYS2_ARG_CONV_EXCL="-DCMAKE_INSTALL_PREFIX=" \
   ${MINGW_PREFIX}/bin/cmake.exe \
     -G"Ninja" \
-    -DCMAKE_MAKE_PROGRAM="/usr/bin/make.exe" \
     -DCMAKE_C_COMPILER="${MINGW_PREFIX}/bin/gcc.exe" \
     -DCMAKE_CXX_COMPILER="${MINGW_PREFIX}/bin/g++.exe" \
     -DFFI_INCLUDE_DIR="${FFI_INCLUDE_DIR}" \
