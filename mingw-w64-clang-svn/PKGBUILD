@@ -20,7 +20,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-svn"
          "${MINGW_PACKAGE_PREFIX}-lld-svn"
          "${MINGW_PACKAGE_PREFIX}-llvm-svn"
         )
-pkgver=58129.eda30f1
+pkgver=58328.e770ba6
 pkgrel=1
 pkgdesc="C language family frontend for LLVM (mingw-w64)"
 arch=('any')
@@ -29,6 +29,7 @@ license=("custom:University of Illinois/NCSA Open Source License")
 makedepends=("${MINGW_PACKAGE_PREFIX}-gcc"
              "${MINGW_PACKAGE_PREFIX}-pkg-config"
              "${MINGW_PACKAGE_PREFIX}-python3-sphinx"
+             "${MINGW_PACKAGE_PREFIX}-ninja"
              "python2" "tar" "git")
 depends=("${MINGW_PACKAGE_PREFIX}-gcc")
 options=('staticlibs' 'strip')
@@ -135,7 +136,7 @@ build() {
 
   MSYS2_ARG_CONV_EXCL="-DCMAKE_INSTALL_PREFIX=" \
   ${MINGW_PREFIX}/bin/cmake.exe \
-    -G"MSYS Makefiles" \
+    -G"Ninja" \
     -DCMAKE_MAKE_PROGRAM="/usr/bin/make.exe" \
     -DCMAKE_C_COMPILER="${MINGW_PREFIX}/bin/gcc.exe" \
     -DCMAKE_CXX_COMPILER="${MINGW_PREFIX}/bin/g++.exe" \
@@ -155,7 +156,7 @@ build() {
     -DLIBCXXABI_ENABLE_SHARED=OFF \
     ../llvm
 
-  make
+  ninja
 }
 
 #check() {
