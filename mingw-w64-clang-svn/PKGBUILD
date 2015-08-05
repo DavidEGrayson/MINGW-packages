@@ -29,7 +29,7 @@ license=("custom:University of Illinois/NCSA Open Source License")
 makedepends=("${MINGW_PACKAGE_PREFIX}-gcc"
              "${MINGW_PACKAGE_PREFIX}-pkg-config"
              "${MINGW_PACKAGE_PREFIX}-python3-sphinx"
-             "python2" "tar" "subversion" "git")
+             "python2" "tar" "git")
 depends=("${MINGW_PACKAGE_PREFIX}-gcc")
 options=('staticlibs' 'strip')
 source=("llvm"::"git+http://llvm.org/git/llvm.git"
