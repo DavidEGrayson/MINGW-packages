@@ -64,13 +64,13 @@ md5sums=('SKIP'
          'SKIP'
          'SKIP'
          'SKIP'
-         'a384d4607d9dcdfdcac6912ac413ec58'
-         'e6ce086a33256043af99a5690b251be8'
-         'a1e06d17915f1cedb1d784ecfdfa60be'
-         '571c047a3570a035a5bfc712435f0c0d'
-         '559b5b75d4efd50079d76dda592fb1b7'
-         '72404042ab22a9c52bc77d24a22f7c01'
-         '6b0b769d999dc884e59d388c5a7f3866')
+         'SKIP'
+         'SKIP'
+         'SKIP'
+         'SKIP'
+         'SKIP'
+         'SKIP'
+         'SKIP')
 
 pkgver_internal() {
   if [ ! -d "$1" ]; then
