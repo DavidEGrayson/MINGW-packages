@@ -30,7 +30,7 @@ makedepends=("${MINGW_PACKAGE_PREFIX}-gcc"
              "${MINGW_PACKAGE_PREFIX}-pkg-config"
              "${MINGW_PACKAGE_PREFIX}-python3-sphinx"
              "${MINGW_PACKAGE_PREFIX}-ninja"
-             "python2" "tar" "git")
+             "python2" "tar" "git" "sed")
 depends=("${MINGW_PACKAGE_PREFIX}-gcc")
 options=('staticlibs' 'strip')
 source=("llvm"::"git+http://llvm.org/git/llvm.git"
@@ -128,8 +128,7 @@ build() {
 
   # Include location of libffi headers in CPPFLAGS
   #CPPFLAGS+=" $(pkg-config --cflags libffi)"
-  FFI_INCLUDE_DIR="$(pkg-config --cflags libffi)"
-  FFI_INCLUDE_DIR=$(echo $FFI_INCLUDE_DIR | sed 's|-I||g')
+  FFI_INCLUDE_DIR="$(pkg-config --cflags libffi | sed 's|-I||g')"
 
   # "Ninja" cant install each component seperately
   # https://github.com/martine/ninja/issues/932
