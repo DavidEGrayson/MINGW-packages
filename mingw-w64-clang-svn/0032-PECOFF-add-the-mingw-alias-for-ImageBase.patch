@@ -25,7 +25,7 @@ index cfa66bf..21186f3 100644
 -    addAtom(_imageBaseAtom);
 +    addAtom(_imageBaseAtomMSVC);
 +    addAtom(_imageBaseAtomGNU);
-   };
+   }
  
  private:
 -  SimpleAbsoluteAtom _imageBaseAtom;
