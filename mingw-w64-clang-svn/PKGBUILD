@@ -20,7 +20,7 @@ pkgname=("${MINGW_PACKAGE_PREFIX}-${_realname}-svn"
          "${MINGW_PACKAGE_PREFIX}-lld-svn"
          "${MINGW_PACKAGE_PREFIX}-llvm-svn"
         )
-pkgver=58329.0103b53
+pkgver=58409.0c7d30c
 pkgrel=1
 pkgdesc="C language family frontend for LLVM (mingw-w64)"
 arch=('any')
@@ -107,10 +107,11 @@ prepare() {
 
   cd "${srcdir}"/lld
   test -d .git/rebase-apply && git am --abort
+  #git reset --hard 54df716ba2b3281b68a30b52404ecf934373dca5
   #git am "${srcdir}"/0031-COFF-add-the-mingw-alias-for-ImageBase.patch
-  git am "${srcdir}"/0032-PECOFF-add-the-mingw-alias-for-ImageBase.patch
-  git am "${srcdir}"/0033-PECOFF-add-searchLibrary-function-with-sysroot-suppo.patch
-  git am "${srcdir}"/0034-GNU-add-support-for-linking-PECOFF.patch
+  #git am "${srcdir}"/0032-PECOFF-add-the-mingw-alias-for-ImageBase.patch
+  #git am "${srcdir}"/0033-PECOFF-add-searchLibrary-function-with-sysroot-suppo.patch
+  #git am "${srcdir}"/0034-GNU-add-support-for-linking-PECOFF.patch
 
   cd "${srcdir}"/libcxx
   test -d .git/rebase-apply && git am --abort
