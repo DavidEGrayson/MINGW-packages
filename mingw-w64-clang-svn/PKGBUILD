@@ -150,8 +150,8 @@ build() {
     -DCMAKE_C_COMPILER="${MINGW_PREFIX}/bin/gcc.exe" \
     -DCMAKE_CXX_COMPILER="${MINGW_PREFIX}/bin/g++.exe" \
     -DFFI_INCLUDE_DIR="${FFI_INCLUDE_DIR}" \
-    -DCMAKE_C_FLAGS="${CFLAGS}" \
-    -DCMAKE_CXX_FLAGS="${CXXFLAGS} ${CPPFLAGS}" \
+    -DCMAKE_C_FLAGS="${CFLAGS} -Wa,-mbig-obj" \
+    -DCMAKE_CXX_FLAGS="${CXXFLAGS} ${CPPFLAGS} -Wa,-mbig-obj" \
     -DCMAKE_INSTALL_PREFIX=${MINGW_PREFIX} \
     -DCMAKE_BUILD_TYPE=Release \
     -DLLVM_TARGETS_TO_BUILD="ARM;CppBackend;X86" \
